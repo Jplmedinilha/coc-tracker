@@ -1,9 +1,10 @@
 body {
   font-family: "Outfit", sans-serif;
-  background-color: #1e1e2f;
-  color: #f0f0f0;
+  background-color: #1e1e2f; /* Original dark background */
+  color: #f0f0f0; /* Original text color */
   margin: 0;
   padding: 2rem;
+  line-height: 1.6; /* Improve text readability */
 }
 
 .dashboard-container {
@@ -14,61 +15,440 @@ body {
   flex-direction: column;
 }
 
-h2,
-h3 {
-  color: #66ffcc;
+h2 {
+  color: #66ffcc; /* Original title color */
   margin-top: 0;
+  font-size: 2.5em; /* Slightly larger for main title */
+  margin-bottom: 1.5rem; /* Spacing after title */
+  text-align: center; /* Center main title */
+  font-weight: 700; /* More emphasis */
+}
+
+h3 {
+  color: #66ffcc; /* Original title color */
+  margin-top: 2rem; /* More space before section titles */
+  margin-bottom: 1rem;
+  font-size: 1.8em; /* Slightly larger for section titles */
+  display: flex; /* For icon and text alignment */
+  align-items: center;
+  justify-content: center; /* Center title with icon */
+  gap: 10px; /* Space between icon and text */
+  font-weight: 500; /* Maintained from original */
+}
+
+/* Style for subtitles within individual details cards */
+.player-individual-details h3 {
+  font-size: 1.5em; /* Smaller than main h3 */
+  margin-top: 0;
+  margin-bottom: 15px;
+}
+
+h4 {
+  color: #66ffcc; /* Same color as titles */
+  font-size: 1.2em;
+  margin-top: 15px;
+  margin-bottom: 10px;
+  text-align: center;
+  font-weight: 600;
+}
+
+p {
+  margin-bottom: 1.5rem;
+  font-size: 1.1em; /* Slightly larger for paragraphs */
+  color: #cccccc; /* Slightly lighter color than body */
+  text-align: center; /* Center paragraphs as well */
+}
+
+strong {
+  font-weight: bold;
+  color: #66ffcc; /* Highlight in neon green */
 }
 
 table.compare-table {
   width: 100%;
   border-collapse: collapse;
   margin-top: 1rem;
-  background-color: #2a2a40;
+  background-color: #2a2a40; /* Original table background */
   border-radius: 8px;
   overflow: hidden;
-  box-shadow: 0 0 10px #00000033;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.4); /* More pronounced shadow for dark theme */
 }
 
 .compare-table th,
 .compare-table td {
-  padding: 12px 16px;
+  padding: 14px 18px; /* More padding for better readability */
   text-align: center;
-  border-bottom: 1px solid #444;
+  border: 1px solid transparent; /* Default transparent border to allow animated border */
+  border-bottom: 1px solid #444; /* Keep default bottom border for collapsing */
+  color: #f0f0f0; /* Default table text color */
+  position: relative; /* Needed for box-shadow */
+}
+
+/* Remove bottom border of the last td in each tr to avoid double line */
+.compare-table tr:last-child td {
+  border-bottom: none;
 }
 
 .compare-table th {
-  background-color: #33334d;
-  color: #ffffffcc;
-  font-weight: 500;
-  font-size: 14px;
+  background-color: #33334d; /* Original header background */
+  color: #ffffffcc; /* Original header text color */
+  font-weight: 500; /* Maintained from original */
+  font-size: 15px; /* Slightly larger */
+  text-transform: uppercase; /* For a more formal header */
+  letter-spacing: 0.5px; /* Small letter spacing */
 }
 
 .compare-table td {
-  font-size: 15px;
+  font-size: 16px; /* Slightly larger */
 }
 
+/* --- New wrapper for level info inside TD --- */
+.level-info-wrapper {
+  display: flex; /* Apply flexbox here, not on TD */
+  flex-direction: column; /* Stack items vertically */
+  justify-content: center; /* Center vertically */
+  align-items: center; /* Center horizontally */
+  height: 100%; /* Take full height of the TD */
+  width: 100%; /* Take full width of the TD */
+}
+
+/* Styles for winning rows adapted to dark theme */
 .highlight-green {
-  background-color: #2e8b5740;
-  color: #aaffaa;
+  background-color: #2e8b5740; /* Original, ensuring contrast */
+  color: #aaffaa; /* Original, light green */
   font-weight: bold;
 }
 
 .highlight-red {
-  background-color: #8b2e2e40;
-  color: #ffaaaa;
+  background-color: #8b2e2e40; /* Original, ensuring contrast */
+  color: #ffaaaa; /* Original, light red */
+  font-weight: bold; /* Added for more emphasis */
 }
 
 .highlight-blue {
-  background-color: #2e568b40;
-  color: #aacaff;
+  background-color: #2e568b40; /* Original, ensuring contrast */
+  color: #aacaff; /* Original, light blue */
   font-style: italic;
+  font-weight: bold; /* Added for more emphasis on draw */
+}
+
+/* Style for labels icons and clan/league */
+.label-icon,
+.clan-badge,
+.league-icon {
+  width: 24px; /* Fixed size for icons */
+  height: 24px;
+  vertical-align: middle; /* Align with text if present */
+  margin-right: 5px; /* Small spacing to the right of the icon */
+}
+
+.clan-badge,
+.league-icon {
+  display: block; /* So the image takes its own line */
+  margin: 10px auto; /* Center image and add space */
+  width: 50px; /* Slightly larger size for emblems/league icons */
+  height: 50px;
+}
+
+/* Loading and error messages (new classes) */
+.info-message {
+  font-size: 1.2em;
+  padding: 20px;
+  text-align: center;
+  color: #66ffcc; /* Same color as titles for consistency */
+  background-color: rgba(102, 255, 204, 0.1); /* Subtle neon green background */
+  border-radius: 8px;
+  border: 1px solid rgba(102, 255, 204, 0.3);
+  margin-top: 20px;
+  display: none; /* Controlled via JS */
+}
+
+.error-message {
+  color: #ffaaaa; /* Same color as highlight-red for errors */
+  background-color: rgba(139, 46, 46, 0.1); /* Subtle red background */
+  border-color: rgba(139, 46, 46, 0.3);
+}
+
+/* Horizontal separator */
+hr {
+  border: none;
+  border-top: 1px solid #444; /* Subtle line to separate sections */
+  margin: 3rem 0; /* Generous spacing */
+}
+
+/* New separator within cards */
+.card-separator {
+  border: none;
+  border-top: 1px dashed #555; /* Dashed line */
+  margin: 1.5rem auto; /* Center and add space */
+  width: 80%; /* Shorter line */
+}
+
+/* --- Styles for side-by-side details layout --- */
+
+.individual-details-wrapper {
+  display: flex;
+  flex-wrap: wrap; /* Allows cards to wrap to the next line on smaller screens */
+  gap: 2rem; /* Space between cards */
+  justify-content: center; /* Center cards when space is available */
+  align-items: flex-start; /* Align cards to the top */
+}
+
+.player-individual-details {
+  flex: 1; /* Allows the card to grow and take available space */
+  min-width: 450px; /* Minimum width for the card */
+  background-color: #2a2a40; /* Original table background, for cards */
+  border-radius: 8px;
+  padding: 25px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.4); /* Consistent shadow */
+  text-align: left; /* Align text left within the card */
+}
+
+.player-individual-details p {
+  margin-bottom: 0.5rem; /* Smaller spacing between detail paragraphs */
+  text-align: left; /* Align paragraphs left within the card */
+  font-size: 1em; /* Normal size for details */
+  color: #f0f0f0; /* Main text color */
+}
+
+.player-individual-details p strong {
+  color: #66ffcc; /* Highlight property names */
+}
+
+/* Compact tables within individual details */
+.compact-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 15px;
+  margin-bottom: 20px;
+  background-color: #33334d; /* Slightly darker background than the card */
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.compact-table th,
+.compact-table td {
+  padding: 8px 12px; /* Smaller padding for more compact tables */
+  text-align: center;
+  border-bottom: 1px solid #555; /* Darker border */
+  font-size: 0.95em; /* Slightly smaller font */
+  color: #f0f0f0;
+}
+
+.compact-table th {
+  background-color: #444466; /* Darker header background */
+  font-weight: 500;
+  color: #ffffffcc;
+}
+
+/* Wrapper for content that should be side-by-side within the card */
+.player-details-sub-wrapper {
+  display: flex;
+  flex-wrap: wrap; /* Allows items to wrap to the next line */
+  gap: 15px; /* Space between sub-cards */
+  justify-content: center; /* Center content */
+}
+
+.player-details-sub-wrapper .player-details-card {
+  flex: 1; /* Allows each sub-card to take up space */
+  min-width: 180px; /* Minimum width for sub-cards */
+  background-color: #3e3e5a; /* Slightly different background for sub-cards */
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.3); /* Inner shadow to differentiate */
+  text-align: center; /* Center text and images within the sub-card */
+}
+
+.player-details-sub-wrapper .player-details-card h4 {
+  margin-top: 0;
+  margin-bottom: 10px;
+  font-size: 1.1em;
+}
+
+.player-details-sub-wrapper .player-details-card p {
+  font-size: 0.9em;
+  margin-bottom: 5px;
+  text-align: center;
+}
+
+/* To ensure strong within sub-card p also has highlight color */
+.player-details-sub-wrapper .player-details-card p strong {
+  color: inherit; /* Inherit default p text color, which is #f0f0f0 */
+  font-weight: bold;
+}
+
+/* --- Styles for Charts --- */
+.chart-section {
+  background-color: #2a2a40; /* Dark background for chart section */
+  border-radius: 8px;
+  padding: 25px;
+  margin-bottom: 2rem; /* Space after each chart section */
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
+  text-align: center;
+}
+
+.chart-section h3 {
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+  font-size: 2em; /* Larger title for chart section */
+}
+
+/* Fixed size for charts */
+canvas {
+  width: 100% !important; /* Force max width of container */
+  height: 400px !important; /* Fixed height for all charts */
+  background-color: #2a2a40; /* Same background color as chart-section for chart area */
+  border-radius: 8px;
+  padding: 10px; /* Small padding for the chart */
+  box-sizing: border-box; /* Include padding and border in width/height */
+}
+
+/* --- GOLD PULSING BORDER EFFECT FOR MAX LEVEL --- */
+
+/* Pulsing animation */
+@keyframes pulse-gold {
+  0% {
+    box-shadow: inset 0 0 0 0 rgba(255, 215, 0, 0.7),
+      /* Inner shadow */ 0 0 0 0 rgba(255, 215, 0, 0); /* Outer shadow */
+    border-color: rgba(255, 215, 0, 0.5); /* More transparent border */
+  }
+  50% {
+    box-shadow: inset 0 0 5px 2px rgba(255, 215, 0, 0.9),
+      /* Inner glow */ 0 0 10px 5px rgba(255, 215, 0, 0.7); /* Spreading outer glow */
+    border-color: rgba(255, 215, 0, 1); /* Solid border */
+  }
+  100% {
+    box-shadow: inset 0 0 0 0 rgba(255, 215, 0, 0.7),
+      0 0 0 0 rgba(255, 215, 0, 0);
+    border-color: rgba(255, 215, 0, 0.5);
+  }
+}
+
+/* Class applied to table cells with max level */
+.max-level-pulse {
+  background-color: rgba(255, 215, 0, 0.05) !important;
+  border: 2px solid rgba(255, 215, 0, 0.5); /* Subtle initial border */
+  animation: pulse-gold 2s infinite alternate; /* Apply animation */
+  font-weight: bold; /* Ensure text is bold */
+  color: #ffd700 !important; /* Force text color to gold when pulsing */
+}
+
+/* --- Style for progress bar --- */
+.level-progress {
+  -webkit-appearance: none; /* For WebKit browsers (Chrome, Safari) */
+  -moz-appearance: none; /* For Mozilla browsers (Firefox) */
+  appearance: none; /* Standard property */
+  width: 90%; /* Bar width */
+  height: 10px; /* Bar height */
+  border: none;
+  background-color: #4a4a6b; /* Background color of empty bar (track) */
+  border-radius: 5px; /* Rounded corners */
+  margin-top: 8px; /* Spacing from bar to level text */
+}
+
+/* Style for progress bar in WebKit browsers */
+.level-progress::-webkit-progress-bar {
+  background-color: #4a4a6b;
+  border-radius: 5px;
+}
+
+/* Style for progress bar fill in WebKit browsers */
+.level-progress::-webkit-progress-value {
+  background-color: #66ffcc; /* Fill color (neon green) */
+  border-radius: 5px;
+  transition: width 0.5s ease-in-out; /* Optional: Add transition for fill */
+}
+
+/* Style for progress bar in Mozilla browsers */
+.level-progress::-moz-progress-bar {
+  background-color: #66ffcc; /* Fill color (neon green) */
+  border-radius: 5px;
+}
+
+/* --- Compact progress bar for individual details cards --- */
+.level-progress-compact {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  width: 80%; /* Slightly narrower for compact cards */
+  height: 6px; /* Thinner bar */
+  border: none;
+  background-color: #555; /* Darker track for better contrast in sub-cards */
+  border-radius: 3px;
+  margin-top: 4px; /* Less spacing */
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.level-progress-compact::-webkit-progress-bar {
+  background-color: #555;
+  border-radius: 3px;
+}
+
+.level-progress-compact::-webkit-progress-value {
+  background-color: #aaffaa; /* Lighter green for compact fill */
+  border-radius: 3px;
+  transition: width 0.5s ease-in-out;
+}
+
+.level-progress-compact::-moz-progress-bar {
+  background-color: #aaffaa;
+  border-radius: 3px;
+}
+
+/* --- Compact max level pulse for individual details cards --- */
+.max-level-pulse-compact {
+  background-color: rgba(
+    255,
+    215,
+    0,
+    0.08
+  ) !important; /* Slightly more opaque background */
+  border: 1px solid rgba(255, 215, 0, 0.7); /* Thinner, more solid border */
+  animation: pulse-gold 1.5s infinite alternate; /* Slightly faster pulse */
+  font-weight: bold;
+  color: #ffd700 !important;
+}
+
+/* General responsiveness */
+@media (max-width: 992px) {
+  .individual-details-wrapper {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .player-individual-details {
+    min-width: unset;
+    width: 100%;
+    max-width: 500px;
+  }
+  .player-details-sub-wrapper {
+    flex-direction: column;
+  }
 }
 
 @media (max-width: 768px) {
+  body {
+    padding: 1rem;
+  }
+
+  h2 {
+    font-size: 2em;
+  }
+
+  h3 {
+    font-size: 1.5em;
+  }
+
   .compare-table td,
   .compare-table th {
-    font-size: 12px;
-    padding: 8px;
+    font-size: 13px;
+    padding: 10px 5px;
+  }
+
+  /* Shorter height for charts on small screens */
+  canvas {
+    height: 300px !important;
   }
 }
