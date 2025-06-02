@@ -10,77 +10,142 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="style.css" />
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   </head>
   <body>
     <div id="dashboards" class="dashboard-container"></div>
 
     <script>
-      fetch("/api/players")
-        .then((res) => res.json())
-        .then((res) => {
-          const container = document.getElementById("dashboards");
-          const { players, comparativo } = res;
+      (async () => {
+        const container = document.getElementById("dashboards");
+
+        const token =
+          "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiIsImtpZCI6IjI4YTMxOGY3LTAwMDAtYTFlYi03ZmExLTJjNzQzM2M2Y2NhNSJ9.eyJpc3MiOiJzdXBlcmNlbGwiLCJhdWQiOiJzdXBlcmNlbGw6Z2FtZWFwaSIsImp0aSI6IjQ3YTc1NzJkLWFhZTctNDM2Ni1hZThjLWUyNzAxOGIwZmZlYSIsImlhdCI6MTc0ODg4ODUyNCwic3ViIjoiZGV2ZWxvcGVyLzYxMGFkOTI1LWZjZTUtZDVhNy0wZWU1LWVlOGM4OGM1ODkzNiIsInNjb3BlcyI6WyJjbGFzaCJdLCJsaW1pdHMiOlt7InRpZXIiOiJkZXZlbG9wZXIvc2lsdmVyIiwidHlwZSI6InRocm90dGxpbmcifSx7ImNpZHJzIjpbIjE3Ny41Mi4xMzIuNjUiLCI0NS43OS4yMTguNzkiXSwidHlwZSI6ImNsaWVudCJ9XX0.7oEN7ggPK6MzcmPI6BKXF7P5DHjSWFpVTkX2_yWZuFgbtB6SxWJi1Tv5J3PqfoNQj2_iFNMeePZXxiCWOoFQNg";
+
+        const players = [
+          { name: "Tony Stark", tag: "#Y9PQCJ02L" }, // Exemplo de tag
+          { name: "tvl", tag: "#22QCVQ8Y" }, // Exemplo de tag
+        ];
+
+        try {
+          const results = [];
+
+          for (const player of players) {
+            // const encodedTag = encodeURIComponent(player.tag);
+            const response = await axios.get(
+              `https://coc.lourenco-jplm1818.workers.dev/?id=${player.name}`
+            );
+            results.push({ name: player.name, data: response.data });
+          }
+
+          const playerTony = results.find(
+            (p) => p.name.toLowerCase() === "tony stark"
+          )?.data;
+          const playerTVL = results.find(
+            (p) => p.name.toLowerCase() === "tvl"
+          )?.data;
+
+          if (!playerTony || !playerTVL) {
+            container.innerHTML =
+              "Erro: Jogadores Tony Stark ou TVL não encontrados.";
+            return;
+          }
+
+          const categorias = ["troops", "spells", "heroes"];
+          const comparativo = {};
+
+          for (const categoria of categorias) {
+            const itensTony = playerTony[categoria] || [];
+            const itensTVL = playerTVL[categoria] || [];
+
+            const nomes = new Set([
+              ...itensTony.map((i) => i.name),
+              ...itensTVL.map((i) => i.name),
+            ]);
+
+            comparativo[categoria] = [];
+
+            for (const nome of nomes) {
+              const itemTony = itensTony.find((i) => i.name === nome);
+              const itemTVL = itensTVL.find((i) => i.name === nome);
+              const levelTony = itemTony?.level || 0;
+              const levelTVL = itemTVL?.level || 0;
+
+              const winner =
+                levelTony > levelTVL
+                  ? "tony"
+                  : levelTVL > levelTony
+                  ? "tvl"
+                  : "draw";
+
+              comparativo[categoria].push({
+                name: nome,
+                tonyLevel: levelTony,
+                tvlLevel: levelTVL,
+                winner,
+              });
+            }
+          }
 
           const createComparisonSection = (title, icon, list) => {
             return `
-        <h3>${icon} ${title}</h3>
-        <table class="compare-table">
-          <thead>
-            <tr>
-              <th>${players.tony.name}</th>
-              <th>Item</th>
-              <th>${players.tvl.name}</th>
-            </tr>
-          </thead>
-          <tbody>
-            ${list
-              .map((item) => {
-                let classTony = "",
-                  classTVL = "";
-                if (item.winner === "tony") {
-                  classTony = "highlight-green";
-                  classTVL = "highlight-red";
-                } else if (item.winner === "tvl") {
-                  classTony = "highlight-red";
-                  classTVL = "highlight-green";
-                } else {
-                  classTony = classTVL = "highlight-blue";
-                }
-
-                return `
+              <h3>${icon} ${title}</h3>
+              <table class="compare-table">
+                <thead>
                   <tr>
-                    <td class="${classTony}">Nível ${item.tonyLevel}</td>
-                    <td>${item.name}</td>
-                    <td class="${classTVL}">Nível ${item.tvlLevel}</td>
-                  </tr>`;
-              })
-              .join("")}
-          </tbody>
-        </table>
-      `;
+                    <th>${playerTony.name}</th>
+                    <th>Item</th>
+                    <th>${playerTVL.name}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  ${list
+                    .map((item) => {
+                      let classTony = "",
+                        classTVL = "";
+                      if (item.winner === "tony") {
+                        classTony = "highlight-green";
+                        classTVL = "highlight-red";
+                      } else if (item.winner === "tvl") {
+                        classTony = "highlight-red";
+                        classTVL = "highlight-green";
+                      } else {
+                        classTony = classTVL = "highlight-blue";
+                      }
+
+                      return `
+                        <tr>
+                          <td class="${classTony}">Nível ${item.tonyLevel}</td>
+                          <td>${item.name}</td>
+                          <td class="${classTVL}">Nível ${item.tvlLevel}</td>
+                        </tr>`;
+                    })
+                    .join("")}
+                </tbody>
+              </table>
+            `;
           };
 
-          const section = document.createElement("div");
-          section.innerHTML = `
-      <h2>Comparativo entre ${players.tony.name} e ${players.tvl.name}</h2>
-      <p style="margin-bottom: 2rem;">
-        <strong>${players.tony.name}</strong> (TH: ${
-            players.tony.townHallLevel
-          }) vs 
-        <strong>${players.tvl.name}</strong> (TH: ${players.tvl.townHallLevel})
-      </p>
+          container.innerHTML = `
+            <h2>Comparativo entre ${playerTony.name} e ${playerTVL.name}</h2>
+            <p style="margin-bottom: 2rem;">
+              <strong>${playerTony.name}</strong> (TH: ${
+            playerTony.townHallLevel
+          }) vs
+              <strong>${playerTVL.name}</strong> (TH: ${
+            playerTVL.townHallLevel
+          })
+            </p>
 
-      ${createComparisonSection("Heróis", "👑", comparativo.heroes)}
-      ${createComparisonSection("Tropas", "⚔️", comparativo.troops)}
-      ${createComparisonSection("Feitiços", "🧙", comparativo.spells)}
-    `;
-          container.appendChild(section);
-        })
-        .catch((err) => {
-          console.error(err);
-          document.getElementById("dashboards").innerText =
-            "Erro ao carregar os dados.";
-        });
+            ${createComparisonSection("Heróis", "👑", comparativo.heroes)}
+            ${createComparisonSection("Tropas", "⚔️", comparativo.troops)}
+            ${createComparisonSection("Feitiços", "🧙", comparativo.spells)}
+          `;
+        } catch (err) {
+          console.error(err.response?.data || err.message);
+          container.innerHTML = "Erro ao carregar os dados dos jogadores.";
+        }
+      })();
     </script>
   </body>
 </html>

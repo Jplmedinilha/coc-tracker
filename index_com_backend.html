@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Clash of Clans - Comparativo</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div id="dashboards" class="dashboard-container"></div>
+
+    <script>
+      fetch("/api/players")
+        .then((res) => res.json())
+        .then((res) => {
+          const container = document.getElementById("dashboards");
+          const { players, comparativo } = res;
+
+          const createComparisonSection = (title, icon, list) => {
+            return `
+        <h3>${icon} ${title}</h3>
+        <table class="compare-table">
+          <thead>
+            <tr>
+              <th>${players.tony.name}</th>
+              <th>Item</th>
+              <th>${players.tvl.name}</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${list
+              .map((item) => {
+                let classTony = "",
+                  classTVL = "";
+                if (item.winner === "tony") {
+                  classTony = "highlight-green";
+                  classTVL = "highlight-red";
+                } else if (item.winner === "tvl") {
+                  classTony = "highlight-red";
+                  classTVL = "highlight-green";
+                } else {
+                  classTony = classTVL = "highlight-blue";
+                }
+
+                return `
+                  <tr>
+                    <td class="${classTony}">Nível ${item.tonyLevel}</td>
+                    <td>${item.name}</td>
+                    <td class="${classTVL}">Nível ${item.tvlLevel}</td>
+                  </tr>`;
+              })
+              .join("")}
+          </tbody>
+        </table>
+      `;
+          };
+
+          const section = document.createElement("div");
+          section.innerHTML = `
+      <h2>Comparativo entre ${players.tony.name} e ${players.tvl.name}</h2>
+      <p style="margin-bottom: 2rem;">
+        <strong>${players.tony.name}</strong> (TH: ${
+            players.tony.townHallLevel
+          }) vs 
+        <strong>${players.tvl.name}</strong> (TH: ${players.tvl.townHallLevel})
+      </p>
+
+      ${createComparisonSection("Heróis", "👑", comparativo.heroes)}
+      ${createComparisonSection("Tropas", "⚔️", comparativo.troops)}
+      ${createComparisonSection("Feitiços", "🧙", comparativo.spells)}
+    `;
+          container.appendChild(section);
+        })
+        .catch((err) => {
+          console.error(err);
+          document.getElementById("dashboards").innerText =
+            "Erro ao carregar os dados.";
+        });
+    </script>
+  </body>
+</html>

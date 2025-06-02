@@ -9,8 +9,10 @@ const players = [
 ];
 
 app.use(express.static("public"));
+// const token =
+//   "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiIsImtpZCI6IjI4YTMxOGY3LTAwMDAtYTFlYi03ZmExLTJjNzQzM2M2Y2NhNSJ9.eyJpc3MiOiJzdXBlcmNlbGwiLCJhdWQiOiJzdXBlcmNlbGw6Z2FtZWFwaSIsImp0aSI6IjMxNThjYTllLTEyN2ItNDhjMS1hNDFlLWI2NjgxMThlNjI1OCIsImlhdCI6MTc0ODg4MDMwNywic3ViIjoiZGV2ZWxvcGVyLzYxMGFkOTI1LWZjZTUtZDVhNy0wZWU1LWVlOGM4OGM1ODkzNiIsInNjb3BlcyI6WyJjbGFzaCJdLCJsaW1pdHMiOlt7InRpZXIiOiJkZXZlbG9wZXIvc2lsdmVyIiwidHlwZSI6InRocm90dGxpbmcifSx7ImNpZHJzIjpbIjE3Ny4yMTQuMTY1LjM2IiwiMC4wLjAuMCJdLCJ0eXBlIjoiY2xpZW50In1dfQ.VStsaTGIddWKEF56vEgoHQLg3qqllNemSVntlhzLStQ3YA5xkNwYLvpfkssAtRdTX5te5_7TW82SBemWdFzx-w";
 const token =
-  "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiIsImtpZCI6IjI4YTMxOGY3LTAwMDAtYTFlYi03ZmExLTJjNzQzM2M2Y2NhNSJ9.eyJpc3MiOiJzdXBlcmNlbGwiLCJhdWQiOiJzdXBlcmNlbGw6Z2FtZWFwaSIsImp0aSI6IjMxNThjYTllLTEyN2ItNDhjMS1hNDFlLWI2NjgxMThlNjI1OCIsImlhdCI6MTc0ODg4MDMwNywic3ViIjoiZGV2ZWxvcGVyLzYxMGFkOTI1LWZjZTUtZDVhNy0wZWU1LWVlOGM4OGM1ODkzNiIsInNjb3BlcyI6WyJjbGFzaCJdLCJsaW1pdHMiOlt7InRpZXIiOiJkZXZlbG9wZXIvc2lsdmVyIiwidHlwZSI6InRocm90dGxpbmcifSx7ImNpZHJzIjpbIjE3Ny4yMTQuMTY1LjM2IiwiMC4wLjAuMCJdLCJ0eXBlIjoiY2xpZW50In1dfQ.VStsaTGIddWKEF56vEgoHQLg3qqllNemSVntlhzLStQ3YA5xkNwYLvpfkssAtRdTX5te5_7TW82SBemWdFzx-w";
+  "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiIsImtpZCI6IjI4YTMxOGY3LTAwMDAtYTFlYi03ZmExLTJjNzQzM2M2Y2NhNSJ9.eyJpc3MiOiJzdXBlcmNlbGwiLCJhdWQiOiJzdXBlcmNlbGw6Z2FtZWFwaSIsImp0aSI6IjQ3YTc1NzJkLWFhZTctNDM2Ni1hZThjLWUyNzAxOGIwZmZlYSIsImlhdCI6MTc0ODg4ODUyNCwic3ViIjoiZGV2ZWxvcGVyLzYxMGFkOTI1LWZjZTUtZDVhNy0wZWU1LWVlOGM4OGM1ODkzNiIsInNjb3BlcyI6WyJjbGFzaCJdLCJsaW1pdHMiOlt7InRpZXIiOiJkZXZlbG9wZXIvc2lsdmVyIiwidHlwZSI6InRocm90dGxpbmcifSx7ImNpZHJzIjpbIjE3Ny41Mi4xMzIuNjUiLCI0NS43OS4yMTguNzkiXSwidHlwZSI6ImNsaWVudCJ9XX0.7oEN7ggPK6MzcmPI6BKXF7P5DHjSWFpVTkX2_yWZuFgbtB6SxWJi1Tv5J3PqfoNQj2_iFNMeePZXxiCWOoFQNg";
 
 app.get("/api/players", async (req, res) => {
   try {
@@ -18,8 +20,10 @@ app.get("/api/players", async (req, res) => {
 
     for (const player of players) {
       const encodedTag = encodeURIComponent(player.tag);
+      console.log(`https://cocproxy.royaleapi.dev/v1/players/${encodedTag}`);
       const response = await axios.get(
-        `https://api.clashofclans.com/v1/players/${encodedTag}`,
+        // `https://api.clashofclans.com/v1/players/${encodedTag}`,
+        `https://cocproxy.royaleapi.dev/v1/players/${encodedTag}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
