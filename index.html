@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Clash of Clans - Dashboards</title>
+    <style>
+      body {
+        font-family: "Segoe UI", sans-serif;
+        background: #f4f7f9;
+        color: #333;
+        margin: 0;
+        padding: 20px;
+      }
+      h1 {
+        text-align: center;
+      }
+      .card {
+        background: white;
+        border-radius: 16px;
+        padding: 20px;
+        margin-bottom: 24px;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+      }
+      .card h2 {
+        margin-top: 0;
+      }
+      ul {
+        list-style: none;
+        padding-left: 0;
+      }
+      .item.green {
+        background: #e8f5e9;
+      }
+      .item.red {
+        background: #ffebee;
+      }
+      .item.blue {
+        background: #e3f2fd;
+      }
+      .item {
+        margin: 2px 0;
+        padding: 6px 10px;
+        border-radius: 8px;
+      }
+      .section {
+        margin-top: 20px;
+      }
+      .section h3 {
+        margin-bottom: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>📊 Dashboards dos Jogadores - Clash of Clans</h1>
+    <div id="dashboards"></div>
+
+    <script>
+      const data = {
+        players: {
+          tony: {
+            name: "Tony Stark",
+            tag: "#AAA111",
+            townHallLevel: 15,
+          },
+          tvl: {
+            name: "TVL",
+            tag: "#BBB222",
+            townHallLevel: 15,
+          },
+        },
+        comparativo: {
+          troops: [
+            { name: "Barbarian", tonyLevel: 9, tvlLevel: 9, winner: "draw" },
+            { name: "Archer", tonyLevel: 8, tvlLevel: 9, winner: "tvl" },
+            { name: "Wizard", tonyLevel: 10, tvlLevel: 9, winner: "tony" },
+          ],
+          spells: [
+            {
+              name: "Lightning Spell",
+              tonyLevel: 8,
+              tvlLevel: 9,
+              winner: "tvl",
+            },
+            { name: "Rage Spell", tonyLevel: 6, tvlLevel: 6, winner: "draw" },
+          ],
+          heroes: [
+            {
+              name: "Barbarian King",
+              tonyLevel: 85,
+              tvlLevel: 80,
+              winner: "tony",
+            },
+            {
+              name: "Archer Queen",
+              tonyLevel: 85,
+              tvlLevel: 85,
+              winner: "draw",
+            },
+            {
+              name: "Grand Warden",
+              tonyLevel: 60,
+              tvlLevel: 55,
+              winner: "tony",
+            },
+            {
+              name: "Royal Champion",
+              tonyLevel: 35,
+              tvlLevel: 37,
+              winner: "tvl",
+            },
+          ],
+        },
+      };
+
+      const container = document.getElementById("dashboards");
+
+      function renderCategoria(titulo, lista) {
+        return `
+        <div class="section">
+          <h3>${titulo}</h3>
+          <ul>
+            ${lista
+              .map((i) => {
+                const cls =
+                  i.winner === "draw"
+                    ? "blue"
+                    : i.winner === "tony"
+                    ? "green"
+                    : "red";
+                return `<li class="item ${cls}">${i.name}: Tony ${i.tonyLevel} x TVL ${i.tvlLevel}</li>`;
+              })
+              .join("")}
+          </ul>
+        </div>
+      `;
+      }
+
+      container.innerHTML = `
+      <div class="card">
+        <h2>Comparativo - ${data.players.tony.name} vs ${
+        data.players.tvl.name
+      }</h2>
+        <p><strong>Tags:</strong> ${data.players.tony.tag} vs ${
+        data.players.tvl.tag
+      }</p>
+        <p><strong>TH:</strong> ${data.players.tony.townHallLevel} vs ${
+        data.players.tvl.townHallLevel
+      }</p>
+        ${renderCategoria("👑 Heróis", data.comparativo.heroes)}
+        ${renderCategoria("⚔️ Tropas", data.comparativo.troops)}
+        ${renderCategoria("🧙 Feitiços", data.comparativo.spells)}
+      </div>
+    `;
+    </script>
+  </body>
+</html>
